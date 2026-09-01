@@ -59,6 +59,8 @@ const ATTRIBUTION_HEADERS_BY_API_ORIGIN = {
     'X-Title': APP_TITLE,
     // `<channel>/<client>`, the shape AI/ML API records the traffic source as.
     'X-AIMLAPI-Source': 'agent/chatgptbox',
+    // Static per-integration id AI/ML API attributes this app's traffic to.
+    'X-AIMLAPI-Partner-ID': 'part_suAsqzeIpC2a5yS8K1leCNtf',
   },
 }
 
