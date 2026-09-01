@@ -37,11 +37,29 @@ const OPENAI_COMPATIBLE_RUNTIME_CONFIG_KEYS = [
   'temperature',
 ]
 
-const OPENROUTER_API_ORIGIN = 'https://openrouter.ai'
-const OPENROUTER_ATTRIBUTION_HEADERS = {
-  'HTTP-Referer': 'https://github.com/ChatGPTBox-dev/chatGPTBox',
-  'X-OpenRouter-Title': 'ChatGPTBox',
-  'X-OpenRouter-Categories': 'general-chat,writing-assistant',
+const APP_REFERER = 'https://github.com/ChatGPTBox-dev/chatGPTBox'
+const APP_TITLE = 'ChatGPTBox'
+
+/**
+ * App-attribution headers, keyed by the API origin they belong to.
+ *
+ * Keying on the origin rather than on the configured provider is deliberate:
+ * one provider's headers can never be sent to another, and a custom provider
+ * that merely fronts an aggregator through a third-party proxy gets none —
+ * attribution is only meaningful when we are talking to the aggregator itself.
+ */
+const ATTRIBUTION_HEADERS_BY_API_ORIGIN = {
+  'https://openrouter.ai': {
+    'HTTP-Referer': APP_REFERER,
+    'X-OpenRouter-Title': APP_TITLE,
+    'X-OpenRouter-Categories': 'general-chat,writing-assistant',
+  },
+  'https://api.aimlapi.com': {
+    'HTTP-Referer': APP_REFERER,
+    'X-Title': APP_TITLE,
+    // `<channel>/<client>`, the shape AI/ML API records the traffic source as.
+    'X-AIMLAPI-Source': 'agent/chatgptbox',
+  },
 }
 
 function hasOpenAICompatibleRuntimeConfig(config) {
@@ -106,13 +124,15 @@ function resolveProviderRequestShapingId(request) {
   return request?.providerId
 }
 
-function getOpenRouterAttributionHeaders(requestUrl) {
+function getProviderAttributionHeaders(requestUrl) {
+  let origin
   try {
-    if (new URL(requestUrl).origin !== OPENROUTER_API_ORIGIN) return {}
+    origin = new URL(requestUrl).origin
   } catch {
     return {}
   }
-  return OPENROUTER_ATTRIBUTION_HEADERS
+  if (!Object.hasOwn(ATTRIBUTION_HEADERS_BY_API_ORIGIN, origin)) return {}
+  return ATTRIBUTION_HEADERS_BY_API_ORIGIN[origin]
 }
 
 function resolveOllamaKeepAliveBaseUrl(request) {
@@ -329,7 +349,7 @@ export async function generateAnswersWithOpenAICompatibleApi(port, question, ses
     apiKey: request.apiKey,
     config: runtimeConfig,
     provider: providerRequestShapingId,
-    extraHeaders: getOpenRouterAttributionHeaders(request.requestUrl),
+    extraHeaders: getProviderAttributionHeaders(request.requestUrl),
     allowLegacyResponseField: request.provider.allowLegacyResponseField,
   })
 

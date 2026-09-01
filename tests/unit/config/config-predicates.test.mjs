@@ -11,6 +11,7 @@ import {
   openRouterApiModelKeys,
   nvidiaNimApiModelKeys,
   aimlApiModelKeys,
+  defaultApiModeIds,
   xaiApiModelKeys,
   isUsingAimlApiModel,
   isUsingAzureOpenAiApiModel,
@@ -59,7 +60,7 @@ const representativeOpenRouterApiModelNames = [
   'openRouter_anthropic_claude_sonnet4_6',
   'openRouter_openai_gpt_5_5',
 ]
-const representativeAimlApiModelNames = ['aiml_claude_sonnet_4_6_20260218', 'aiml_openai_gpt_5_5']
+const representativeAimlApiModelNames = ['aiml_claude_sonnet_4_6', 'aiml_openai_gpt_5_5']
 
 const originalNavigatorDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'navigator')
 
@@ -334,5 +335,25 @@ describe('getPreferredLanguageKey', () => {
   test('uses the browser language when storage is empty', async () => {
     const key = await getPreferredLanguageKey()
     assert.equal(key, 'en')
+  })
+})
+
+describe('AI/ML API defaults', () => {
+  const aimlDefaultIds = defaultApiModeIds.filter((modelName) => modelName.startsWith('aiml_'))
+
+  test('ships AI/ML API models in the default API modes', () => {
+    // Without an entry here the provider is not selectable until the user
+    // enables it by hand in settings, which is how it went unnoticed before.
+    assert.ok(aimlDefaultIds.length > 0)
+  })
+
+  test('every AI/ML API default names a model that actually exists', () => {
+    // A typo in a default id fails silently: the mode never materializes and
+    // the provider simply stays missing from the selector.
+    for (const modelName of aimlDefaultIds) {
+      assert.ok(Object.hasOwn(Models, modelName), `${modelName} is not defined in Models`)
+      assert.ok(aimlApiModelKeys.includes(modelName), `${modelName} is not an AI/ML API model key`)
+      assert.equal(isUsingAimlApiModel({ modelName }), true)
+    }
   })
 })
