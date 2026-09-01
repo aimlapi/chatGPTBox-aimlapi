@@ -4,7 +4,12 @@ import { generateAnswersWithOpenAICompatibleApi } from '../../../../src/services
 import { createFakePort } from '../../helpers/port.mjs'
 import { createMockSseResponse } from '../../helpers/sse-response.mjs'
 
-const AIMLAPI_ATTRIBUTION_HEADER_NAMES = ['HTTP-Referer', 'X-Title', 'X-AIMLAPI-Source']
+const AIMLAPI_ATTRIBUTION_HEADER_NAMES = [
+  'HTTP-Referer',
+  'X-Title',
+  'X-AIMLAPI-Source',
+  'X-AIMLAPI-Partner-ID',
+]
 const OPENROUTER_ONLY_HEADER_NAMES = ['X-OpenRouter-Title', 'X-OpenRouter-Categories']
 
 function createConfig(overrides = {}) {
@@ -37,6 +42,7 @@ function assertAimlapiAttribution(headers) {
   assert.equal(headers['HTTP-Referer'], 'https://github.com/ChatGPTBox-dev/chatGPTBox')
   assert.equal(headers['X-Title'], 'ChatGPTBox')
   assert.equal(headers['X-AIMLAPI-Source'], 'agent/chatgptbox')
+  assert.equal(headers['X-AIMLAPI-Partner-ID'], 'part_suAsqzeIpC2a5yS8K1leCNtf')
 }
 
 function assertNoAimlapiAttribution(headers) {
@@ -104,6 +110,7 @@ test('keeps AI/ML API headers off OpenRouter requests', async (t) => {
   const { capturedInit } = await captureRequest(t, config, session)
 
   assert.equal(Object.hasOwn(capturedInit.headers, 'X-AIMLAPI-Source'), false)
+  assert.equal(Object.hasOwn(capturedInit.headers, 'X-AIMLAPI-Partner-ID'), false)
   assert.equal(Object.hasOwn(capturedInit.headers, 'X-Title'), false)
 })
 
