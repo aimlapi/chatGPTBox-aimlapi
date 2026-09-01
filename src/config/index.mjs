@@ -173,7 +173,7 @@ export const openRouterApiModelKeys = [
   'openRouter_deepseek_v4_flash',
 ]
 export const aimlApiModelKeys = [
-  'aiml_claude_sonnet_4_6_20260218',
+  'aiml_claude_sonnet_4_6',
   'aiml_openai_gpt_5_2',
   'aiml_google_gemini_3_flash_preview',
   'aiml_google_gemini_3_1_pro_preview',
@@ -636,8 +636,8 @@ export const Models = {
     value: 'anthropic/claude-haiku-4.5',
     desc: 'AIML (Claude Haiku 4.5)',
   },
-  aiml_claude_sonnet_4_6_20260218: {
-    value: 'anthropic/claude-sonnet-4-6-20260218',
+  aiml_claude_sonnet_4_6: {
+    value: 'anthropic/claude-sonnet-4-6',
     desc: 'AIML (Claude Sonnet 4.6)',
   },
   aiml_openai_gpt_5_2: {
@@ -653,7 +653,7 @@ export const Models = {
     desc: 'AIML (Gemini 3 Flash)',
   },
   aiml_google_gemini_3_1_pro_preview: {
-    value: 'google/gemini-3-1-pro-preview',
+    value: 'google/gemini-3.1-pro-preview',
     desc: 'AIML (Gemini 3.1 Pro)',
   },
   aiml_google_gemini_2_5_pro: {

@@ -62,7 +62,7 @@ const BUILTIN_PROVIDER_TEMPLATE = [
   },
   {
     id: 'aiml',
-    name: 'AI/ML',
+    name: 'AI/ML API',
     baseUrl: 'https://api.aimlapi.com/v1',
     chatCompletionsPath: '/chat/completions',
     completionsPath: '/completions',
