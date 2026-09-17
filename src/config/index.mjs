@@ -18,10 +18,7 @@ import {
   canonicalizeModelKey,
   canonicalizeModelKeyArray,
 } from './model-key-migrations.mjs'
-import {
-  getNavigatorLanguage,
-  resolvePreferredLanguageKey,
-} from './language-data.mjs'
+import { getNavigatorLanguage, resolvePreferredLanguageKey } from './language-data.mjs'
 
 export { getNavigatorLanguage }
 
@@ -82,6 +79,7 @@ export const chatgptApiModelKeys = [
   'chatgptApi5_6Sol',
   'chatgptApi5_6Terra',
   'chatgptApi5_6Luna',
+  'chatgptApi6Astra',
   'chatgptApi4oMini',
   'chatgptApi4_1',
   'chatgptApi4_1_mini',
@@ -91,6 +89,8 @@ export const customApiModelKeys = ['customModel']
 export const ollamaApiModelKeys = ['ollamaModel']
 export const azureOpenAiApiModelKeys = ['azureOpenAi']
 export const claudeApiModelKeys = [
+  'claudeFable5Api',
+  'claudeFable51Api',
   'claudeOpus41Api',
   'claudeOpus45Api',
   'claudeOpus46Api',
@@ -196,6 +196,7 @@ export const googleApiModelKeys = [
   'googleGemini3_5FlashLite',
   'googleGemini3_6Flash',
   'googleGemini3_7Flash',
+  'googleGemini3_8Flash',
   'googleGemini3Flash',
   'googleGemini2_5Pro',
   'googleGemini2_5Flash',
@@ -332,12 +333,21 @@ export const Models = {
   chatgptApi5_6Sol: { value: 'gpt-5.6-sol', desc: 'OpenAI (GPT-5.6 Sol)' },
   chatgptApi5_6Terra: { value: 'gpt-5.6-terra', desc: 'OpenAI (GPT-5.6 Terra)' },
   chatgptApi5_6Luna: { value: 'gpt-5.6-luna', desc: 'OpenAI (GPT-5.6 Luna)' },
+  chatgptApi6Astra: { value: 'gpt-6-astra', desc: 'OpenAI (GPT-6 Astra)' },
 
   chatgptApi4_1: { value: 'gpt-4.1', desc: 'OpenAI (GPT-4.1)' },
   chatgptApi4_1_mini: { value: 'gpt-4.1-mini', desc: 'OpenAI (GPT-4.1 mini)' },
   chatgptApi4_1_nano: { value: 'gpt-4.1-nano', desc: 'OpenAI (GPT-4.1 nano)' },
 
   claude2WebFree: { value: '', desc: 'Claude.ai (Web)' },
+  claudeFable5Api: {
+    value: 'claude-fable-5',
+    desc: 'Anthropic (Claude Fable 5)',
+  },
+  claudeFable51Api: {
+    value: 'claude-fable-5-1',
+    desc: 'Anthropic (Claude Fable 5.1)',
+  },
   claudeOpus41Api: {
     value: 'claude-opus-4-1-20250805',
     desc: 'Anthropic (Claude Opus 4.1)',
@@ -696,6 +706,10 @@ export const Models = {
     value: 'gemini-3.7-flash',
     desc: 'Google (Gemini 3.7 Flash)',
   },
+  googleGemini3_8Flash: {
+    value: 'gemini-3.8-flash',
+    desc: 'Google (Gemini 3.8 Flash)',
+  },
   googleGemini3Flash: {
     value: 'gemini-3-flash-preview',
     desc: 'Google (Gemini 3 Flash Preview)',
@@ -749,13 +763,15 @@ export const defaultApiModeIds = [
   'chatgptApi5_6Sol',
   'chatgptApi5_6Terra',
   'chatgptApi5_6Luna',
+  'chatgptApi6Astra',
   'xaiGrok4_6',
   'xaiGrok4_5',
+  'claudeFable51Api',
   'claudeOpus5Api',
   'claudeSonnet5Api',
   'claudeHaiku45Api',
   'googleGemini3_1Pro',
-  'googleGemini3_7Flash',
+  'googleGemini3_8Flash',
   'mistralMediumLatest',
   'openRouter_auto',
   'openRouter_free',

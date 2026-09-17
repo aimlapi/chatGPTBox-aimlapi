@@ -35,6 +35,9 @@ test('temperature overrides omit known Anthropic models across provider ID forma
     'claude-opus-4-8-20260801',
     'claude-sonnet-5',
     'claude-opus-5',
+    'claude-fable-5',
+    'claude-fable-5-1',
+    'anthropic/claude-fable-5.1',
   ]) {
     assert.equal(canApplyTemperatureOverride(model), false, model)
     assert.deepEqual(
@@ -95,5 +98,24 @@ test('temperature overrides remain available for earlier Gemini models', () => {
       { temperature: 0.7 },
       model,
     )
+  }
+})
+
+test('temperature overrides omit GPT-6 Astra across provider ID formats', () => {
+  for (const model of [
+    'gpt-6-astra',
+    'openai/gpt-6-astra',
+    'GPT-6-ASTRA',
+    'gpt-6-astra-20260901',
+  ]) {
+    assert.equal(canApplyTemperatureOverride(model), false, model)
+    assert.deepEqual(
+      getTemperatureParams({ temperatureOverrideEnabled: true, temperature: 0.7 }, model),
+      {},
+      model,
+    )
+  }
+  for (const model of ['gpt-6-astral', 'my-gpt-6-astra', 'gpt-4.1']) {
+    assert.equal(canApplyTemperatureOverride(model), true, model)
   }
 })
